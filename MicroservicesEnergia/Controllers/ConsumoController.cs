@@ -24,38 +24,57 @@ namespace MicroservicesEnergia.Controllers
             string key = "getconsumo";
             redis = ConnectionMultiplexer.Connect("localhost:6379");
             IDatabase db = redis.GetDatabase();
-            await db.KeyExpireAsync(key, TimeSpan.FromSeconds(10));
-            string user = await db.StringGetAsync(key);
 
-            if (!string.IsNullOrEmpty(user))
+            try
             {
-                return Ok(user);
+                await db.KeyExpireAsync(key, TimeSpan.FromSeconds(10));
+                string user = await db.StringGetAsync(key);
+
+                if (!string.IsNullOrEmpty(user))
+                {
+                    return Ok(user);
+                }
+
+                var consumos = await _repository.ListarConsumos();
+
+                if (consumos == null)
+                {
+                    return NotFound();
+                }
+
+                string consumosJson = JsonConvert.SerializeObject(consumos);
+                await db.StringSetAsync(key, consumosJson);
+
+                return Ok(consumos);
             }
-
-            var consumos = await _repository.ListarConsumos();
-
-            if (consumos == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(500, new { mensagem = "Erro no servidor." });
             }
-
-            string consumosJson = JsonConvert.SerializeObject(consumos);
-            await db.StringSetAsync(key, consumosJson);
-
-            return Ok(consumos);
         }
 
         [HttpPost("consumo")]
         public async Task<IActionResult> PostConsumo([FromBody] Consumo consumo)
         {
-            await _repository.SalvarConsumo(consumo);
+            if (consumo == null)
+            {
+                return BadRequest(new { mensagem = "Dados inválidos. " });
+            }
 
-            string key = "getconsumo";
-            redis = ConnectionMultiplexer.Connect("localhost:6379");
-            IDatabase db = redis.GetDatabase();
-            await db.KeyDeleteAsync(key);
+            try
+            {
+                await _repository.SalvarConsumo(consumo);
 
-            return Ok(new { mensagem = "Criado com sucesso!" });
+                string key = "getconsumo";
+                redis = ConnectionMultiplexer.Connect("localhost:6379");
+                IDatabase db = redis.GetDatabase();
+                await db.KeyDeleteAsync(key);
+
+                return CreatedAtAction(nameof(GetConsumo), new { id = consumo.Id }, new { mensagem = "Consumo criado com sucesso!" });
+            } catch (Exception ex)
+            {
+                return StatusCode(500, new { mensagem = "Erro no servidor." });
+            }
 
         }
     }
