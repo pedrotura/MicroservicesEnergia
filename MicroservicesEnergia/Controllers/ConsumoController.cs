@@ -6,10 +6,11 @@ using MicroservicesRepository.Interfaces;
 
 namespace MicroservicesEnergia.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class ConsumoController : ControllerBase
     {
+        private static ConnectionMultiplexer redis;
         private readonly IConsumoRepository _repository;
 
         public ConsumoController(IConsumoRepository repository)
@@ -17,10 +18,10 @@ namespace MicroservicesEnergia.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("health")]
         public async Task<IActionResult> GetConsumo()
         {
-            /*string key = "getconsumo";
+            string key = "getconsumo";
             redis = ConnectionMultiplexer.Connect("localhost:6379");
             IDatabase db = redis.GetDatabase();
             await db.KeyExpireAsync(key, TimeSpan.FromSeconds(10));
@@ -29,7 +30,7 @@ namespace MicroservicesEnergia.Controllers
             if (!string.IsNullOrEmpty(user))
             {
                 return Ok(user);
-            }*/
+            }
 
             var consumos = await _repository.ListarConsumos();
 
@@ -39,21 +40,20 @@ namespace MicroservicesEnergia.Controllers
             }
 
             string consumosJson = JsonConvert.SerializeObject(consumos);
-            // await db.StringSetAsync(key, consumosJson);
+            await db.StringSetAsync(key, consumosJson);
 
             return Ok(consumos);
         }
 
-        [HttpPost]
+        [HttpPost("consumo")]
         public async Task<IActionResult> PostConsumo([FromBody] Consumo consumo)
         {
             await _repository.SalvarConsumo(consumo);
 
-            //apaga o cache
-            /*string key = "getconsumo";
+            string key = "getconsumo";
             redis = ConnectionMultiplexer.Connect("localhost:6379");
             IDatabase db = redis.GetDatabase();
-            await db.KeyDeleteAsync(key);*/
+            await db.KeyDeleteAsync(key);
 
             return Ok(new { mensagem = "Criado com sucesso!" });
 

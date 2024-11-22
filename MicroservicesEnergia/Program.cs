@@ -1,4 +1,3 @@
-using MicroservicesEnergia.Services;
 using MicroservicesDomain;
 using MicroservicesRepository;
 using MicroservicesRepository.Interfaces;
@@ -17,8 +16,8 @@ builder.Services.AddScoped<IConsumoRepository, ConsumoRepository>();
 
 // Configurando o banco de dados
 builder.Services.Configure<MongoSettings>(
-    builder.Configuration.GetSection("MongoDbSettings"));
-builder.Services.AddSingleton<MongoService>();
+    builder.Configuration.GetSection("MongoSettings"));
+builder.Services.AddSingleton<ConsumoRepository>();
 
 builder.Services.AddControllers();
 
