@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroservicesEnergia", "MicroservicesEnergia\MicroservicesEnergia.csproj", "{80213D10-DAF0-4202-9563-E6C409187489}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroservicesEnergia", "MicroservicesEnergia\MicroservicesEnergia.csproj", "{80213D10-DAF0-4202-9563-E6C409187489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroservicesDomain", "MicroservicesDomain\MicroservicesDomain.csproj", "{21970267-6FBE-4E04-8178-2ED0917746A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroservicesDomain", "MicroservicesDomain\MicroservicesDomain.csproj", "{21970267-6FBE-4E04-8178-2ED0917746A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroservicesRepository", "MicroservicesRepository\MicroservicesRepository.csproj", "{F8ACB68E-5620-4634-B205-0D8F8FCA48B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroservicesRepository", "MicroservicesRepository\MicroservicesRepository.csproj", "{F8ACB68E-5620-4634-B205-0D8F8FCA48B4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{123FC61D-27C5-4C22-85D3-8C34A37D39DF}"
 	ProjectSection(SolutionItems) = preProject
