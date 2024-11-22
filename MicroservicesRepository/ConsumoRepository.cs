@@ -10,11 +10,11 @@ namespace MicroservicesRepository
     {
         private readonly IMongoCollection<Consumo> _consumoCollection;
 
-        public ConsumoRepository(IOptions<MongoSettings> mongoDbSettings)
+        public ConsumoRepository(IOptions<MongoSettings> mongoSettings)
         {
-            var client = new MongoClient(mongoDbSettings.Value.connectionString);
-            var database = client.GetDatabase(mongoDbSettings.Value.databaseName);
-            _consumoCollection = database.GetCollection<Consumo>(mongoDbSettings.Value.collectionName);
+            var client = new MongoClient(mongoSettings.Value.connectionString);
+            var database = client.GetDatabase(mongoSettings.Value.databaseName);
+            _consumoCollection = database.GetCollection<Consumo>(mongoSettings.Value.collectionName);
         }
 
         public async Task<IEnumerable<Consumo>> ListarConsumos()

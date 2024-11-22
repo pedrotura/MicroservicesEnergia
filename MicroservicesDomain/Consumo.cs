@@ -6,6 +6,6 @@
         public string Status { get; set; }
         public double ConsumoKwh {  get; set; }
         public string DataMedicao { get; set; }
-        public string localMedicao  { get; set; }
+        public string LocalMedicao  { get; set; }
     }
 }
